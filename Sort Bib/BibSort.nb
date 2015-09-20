@@ -1,0 +1,747 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     29774,        738]
+NotebookOptionsPosition[     28968,        705]
+NotebookOutlinePosition[     29312,        720]
+CellTagsIndexPosition[     29269,        717]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Functions", "Section",
+ CellChangeTimes->{{3.566746199982231*^9, 3.566746201557834*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"BibOrder", "[", 
+     RowBox[{"fn_", ",", "ofn_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "tex", ",", "cites", ",", "posb", ",", "pose", ",", "bib", ",", 
+        "bitem", ",", "VF", ",", 
+        RowBox[{"in", "=", "0"}], ",", "set1", ",", "set2"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"tex", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"fn", ",", "\"\<String\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cites", "=", 
+        RowBox[{"StringCases", "[", 
+         RowBox[{"tex", ",", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", "\"\<(?<!%)\\\\\\\\cite{([^{}]+)}\>\"", 
+            "]"}], "->", "\"\<$1\>\""}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cites", "=", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringTrim", "@", 
+             RowBox[{"StringSplit", "[", 
+              RowBox[{"#", ",", "\"\<,\>\""}], "]"}]}], "&"}], ",", "cites"}],
+           "]"}], "//", "Flatten"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"cites", "=", 
+        RowBox[{"DeleteDuplicates", "[", "cites", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"posb", "=", 
+        RowBox[{"StringPosition", "[", 
+         RowBox[{"tex", ",", "\"\<\\\\begin{thebibliography}{99}\>\""}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pose", "=", 
+        RowBox[{"StringPosition", "[", 
+         RowBox[{"tex", ",", "\"\<\\\\end{thebibliography}\>\""}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"bib", "=", 
+        RowBox[{"StringTrim", "@", 
+         RowBox[{"StringTake", "[", 
+          RowBox[{"tex", ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"posb", "[", 
+               RowBox[{"[", 
+                RowBox[{"1", ",", "2"}], "]"}], "]"}], "+", "1"}], ",", 
+             RowBox[{
+              RowBox[{"pose", "[", 
+               RowBox[{"[", 
+                RowBox[{"1", ",", "1"}], "]"}], "]"}], "-", "1"}]}], "}"}]}], 
+          "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"bitem", "=", 
+        RowBox[{"StringCases", "[", 
+         RowBox[{"bib", ",", 
+          RowBox[{
+          "RegularExpression", "[", 
+           "\"\<((%\\\\\\\\cite{[^{}]+}\\r\\n)?\\\\\\\\bibitem{[^{}]+}(?s).*?)\
+(?=%\\\\\\\\cite|\\\\\\\\bibitem{|$)\>\"", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"bitem", "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{"StringTrim", ",", "bitem"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Scan", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"VF", "[", "#", "]"}], "=", 
+            RowBox[{"in", "++"}]}], ")"}], "&"}], ",", "cites"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"VF", "[", "x_", "]"}], ":=", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"VF", "[", "x", "]"}], "=", 
+          RowBox[{"in", "++"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"bib", "=", 
+        RowBox[{
+         RowBox[{"StringCases", "[", 
+          RowBox[{"bitem", ",", 
+           RowBox[{
+            RowBox[{
+            "RegularExpression", "[", "\"\<\\\\\\\\bibitem{([^{}]+)}\>\"", 
+             "]"}], "->", "\"\<$1\>\""}]}], "]"}], "//", "Flatten"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"bitem", "=", 
+        RowBox[{"SortBy", "[", 
+         RowBox[{"bitem", ",", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"VF", "[", 
+             RowBox[{
+              RowBox[{"StringCases", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{
+                 RowBox[{
+                 "RegularExpression", "[", 
+                  "\"\<\\\\\\\\bibitem{([^{}]+)}\>\"", "]"}], "->", 
+                 "\"\<$1\>\""}]}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "]"}], ")"}], "&"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"set1", "=", 
+        RowBox[{"Complement", "[", 
+         RowBox[{"cites", ",", "bib"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"set2", "=", 
+        RowBox[{"Complement", "[", 
+         RowBox[{"bib", ",", "cites"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"tex", "=", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+          RowBox[{"StringTake", "[", 
+           RowBox[{"tex", ",", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", 
+              RowBox[{"posb", "[", 
+               RowBox[{"[", 
+                RowBox[{"1", ",", "2"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+          "bitem", ",", 
+          RowBox[{"StringTake", "[", 
+           RowBox[{"tex", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"pose", "[", 
+               RowBox[{"[", 
+                RowBox[{"1", ",", "2"}], "]"}], "]"}], ",", 
+              RowBox[{"-", "1"}]}], "}"}]}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"ofn", ",", "tex", ",", "\"\<String\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", 
+        RowBox[{"{", 
+         RowBox[{"set1", ",", "set2"}], "}"}], "]"}], ";"}]}], "\n", "]"}]}], 
+   ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.5667259540208464`*^9, 3.5667259637552633`*^9}, {
+   3.5667461800453963`*^9, 3.566746192135418*^9}, {3.5667783869800234`*^9, 
+   3.5667784623663354`*^9}, 3.5667801076648912`*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["UI ", "Section",
+ CellChangeTimes->{{3.5667462142406564`*^9, 3.566746215145458*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FileNameSetter", "[", 
+   RowBox[{"Dynamic", "[", "OTexFile", "]"}], "]"}], "//", 
+  "Deploy"}]], "Input",
+ CellChangeTimes->{{3.5667457443400283`*^9, 3.5667458004065266`*^9}, {
+  3.5667459246624207`*^9, 3.5667459261912236`*^9}, {3.566746824558503*^9, 
+  3.5667468271637077`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FileNameSetter", "[", 
+   RowBox[{
+    RowBox[{"Dynamic", "[", "NTexFile", "]"}], ",", "\"\<Save\>\""}], "]"}], "//",
+   "Deploy"}]], "Input",
+ CellChangeTimes->{{3.5667457626856604`*^9, 3.56674580210693*^9}, 
+   3.56674691566444*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Button", "[", 
+   RowBox[{"\"\<NOW Order\>\"", ",", 
+    RowBox[{"BibOrder", "[", 
+     RowBox[{"OTexFile", ",", "NTexFile"}], "]"}]}], "]"}], "//", 
+  "Deploy"}]], "Input",
+ CellChangeTimes->{{3.5667460424948187`*^9, 3.5667460662068605`*^9}, {
+  3.5667468321245165`*^9, 3.566746833559719*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["CDF", "Section",
+ CellChangeTimes->{{3.566778267019162*^9, 3.5667782681432266`*^9}, {
+  3.5667840743093033`*^9, 3.5667840747773046`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"sort", "=", 
+  RowBox[{"DynamicModule", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"TeXIn", ",", "TeXOut"}], "}"}], ",", 
+    RowBox[{"Panel", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Row", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<   Input: \>\"", ",", "Blue"}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"TeXIn", "=", "Null"}], ";", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "TeXIn", "]"}], ",", "String", ",", 
+                RowBox[{"ImageSize", "\[Rule]", "300"}]}], "]"}]}]}], "}"}], 
+           "]"}], ",", 
+          RowBox[{"FileNameSetter", "[", 
+           RowBox[{"Dynamic", "[", "TeXIn", "]"}], "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Row", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<Output: \>\"", ",", "Blue"}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"TeXOut", "=", "Null"}], ";", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "TeXOut", "]"}], ",", "String", ",", 
+                RowBox[{"ImageSize", "\[Rule]", "300"}]}], "]"}]}]}], "}"}], 
+           "]"}], ",", 
+          RowBox[{"FileNameSetter", "[", 
+           RowBox[{
+            RowBox[{"Dynamic", "[", "TeXOut", "]"}], ",", "\"\<Save\>\""}], 
+           "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Button", "[", 
+           RowBox[{"\"\<Sort bibitems NOW\>\"", ",", 
+            RowBox[{"Result", "=", 
+             RowBox[{"SortBibitem", "[", 
+              RowBox[{"TeXIn", ",", "TeXOut"}], "]"}]}]}], "]"}], ",", 
+          "SpanFromLeft"}], "}"}]}], "}"}], "//", "Grid"}], "]"}], ",", 
+    RowBox[{"Initialization", "\[RuleDelayed]", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"SetDirectory", "[", 
+        RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";", 
+       RowBox[{
+        RowBox[{"SortBibitem", "[", 
+         RowBox[{"fn_", ",", "ofn_"}], "]"}], ":=", 
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "tex", ",", "cites", ",", "posb", ",", "pose", ",", "bib", ",", 
+            "bitem", ",", "VF", ",", 
+            RowBox[{"in", "=", "0"}], ",", "set1", ",", "set2"}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"fn", "===", "Null"}], "||", 
+              RowBox[{"ofn", "===", "Null"}]}], ",", 
+             RowBox[{
+              RowBox[{"MessageDialog", "[", 
+               RowBox[{
+               "\"\<Please Set The Input & Output TeX Files!\>\"", ",", 
+                RowBox[{"WindowTitle", "\[Rule]", "\"\<File Not Set!\>\""}]}],
+                "]"}], ";", 
+              RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"Not", "@", 
+              RowBox[{"FileExistsQ", "[", "fn", "]"}]}], ",", 
+             RowBox[{
+              RowBox[{"MessageDialog", "[", 
+               RowBox[{"\"\<The Input File Not Found!\>\"", ",", 
+                RowBox[{
+                "WindowTitle", "\[Rule]", "\"\<File Not Found!\>\""}]}], 
+               "]"}], ";", 
+              RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"tex", "=", 
+            RowBox[{"Import", "[", 
+             RowBox[{"fn", ",", "\"\<String\>\""}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"cites", "=", 
+            RowBox[{"StringCases", "[", 
+             RowBox[{"tex", ",", 
+              RowBox[{
+               RowBox[{
+               "RegularExpression", "[", 
+                "\"\<(?<!%)\\\\\\\\cite{([^{}]+)}\>\"", "]"}], "->", 
+               "\"\<$1\>\""}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"cites", "=", 
+            RowBox[{
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"StringTrim", "@", 
+                 RowBox[{"StringSplit", "[", 
+                  RowBox[{"#", ",", "\"\<,\>\""}], "]"}]}], "&"}], ",", 
+               "cites"}], "]"}], "//", "Flatten"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"cites", "=", 
+            RowBox[{"DeleteDuplicates", "[", "cites", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"posb", "=", 
+            RowBox[{"StringPosition", "[", 
+             RowBox[{"tex", ",", "\"\<\\\\begin{thebibliography}{99}\>\""}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"pose", "=", 
+            RowBox[{"StringPosition", "[", 
+             RowBox[{"tex", ",", "\"\<\\\\end{thebibliography}\>\""}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"posb", "===", 
+              RowBox[{"{", "}"}]}], ",", 
+             RowBox[{
+              RowBox[{"MessageDialog", "[", 
+               RowBox[{
+               "\"\<\\\\begin{thebibliography}{99} Not Found\>\"", ",", 
+                RowBox[{
+                "WindowTitle", "\[Rule]", "\"\<Begin Mark Not Found!\>\""}]}],
+                "]"}], ";", 
+              RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"pose", "===", 
+              RowBox[{"{", "}"}]}], ",", 
+             RowBox[{
+              RowBox[{"MessageDialog", "[", 
+               RowBox[{"\"\<\\\\end{thebibliography} Not Found\>\"", ",", 
+                RowBox[{
+                "WindowTitle", "\[Rule]", "\"\<End Mark Not Found!\>\""}]}], 
+               "]"}], ";", 
+              RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"bib", "=", 
+            RowBox[{"StringTrim", "@", 
+             RowBox[{"StringTake", "[", 
+              RowBox[{"tex", ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"posb", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "2"}], "]"}], "]"}], "+", "1"}], ",", 
+                 RowBox[{
+                  RowBox[{"pose", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "-", "1"}]}], 
+                "}"}]}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"bitem", "=", 
+            RowBox[{"StringCases", "[", 
+             RowBox[{"bib", ",", 
+              RowBox[{
+              "RegularExpression", "[", 
+               "\"\<((%\\\\\\\\cite{[^{}]+}\\\\r?\\\\n\\\\r?)?\\\\\\\\bibitem{\
+[^{}]+}((?s).*?))(?=%\\\\\\\\cite|\\\\\\\\bibitem{|$)\>\"", "]"}]}], "]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"bitem", "=", 
+            RowBox[{"Map", "[", 
+             RowBox[{"StringTrim", ",", "bitem"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Scan", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"VF", "[", "#", "]"}], "=", 
+                RowBox[{"in", "++"}]}], ")"}], "&"}], ",", "cites"}], "]"}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"VF", "[", "x_", "]"}], ":=", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"VF", "[", "x", "]"}], "=", 
+              RowBox[{"in", "++"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"bib", "=", 
+            RowBox[{
+             RowBox[{"StringCases", "[", 
+              RowBox[{"bitem", ",", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", "\"\<\\\\\\\\bibitem{([^{}]+)}\>\"",
+                  "]"}], "->", "\"\<$1\>\""}]}], "]"}], "//", "Flatten"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"bitem", "=", 
+            RowBox[{"SortBy", "[", 
+             RowBox[{"bitem", ",", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"VF", "[", 
+                 RowBox[{
+                  RowBox[{"StringCases", "[", 
+                   RowBox[{"#", ",", 
+                    RowBox[{
+                    RowBox[{
+                    "RegularExpression", "[", 
+                    "\"\<\\\\\\\\bibitem{([^{}]+)}\>\"", "]"}], "->", 
+                    "\"\<$1\>\""}]}], "]"}], "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "]"}], ")"}], "&"}]}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"set1", "=", 
+            RowBox[{"Complement", "[", 
+             RowBox[{"cites", ",", "bib"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"set2", "=", 
+            RowBox[{"Complement", "[", 
+             RowBox[{"bib", ",", "cites"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"tex", "=", 
+            RowBox[{"StringJoin", "[", 
+             RowBox[{
+              RowBox[{"StringTake", "[", 
+               RowBox[{"tex", ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", 
+                  RowBox[{"posb", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "2"}], "]"}], "]"}]}], "}"}]}], "]"}], 
+              ",", "\"\<\\n\>\"", ",", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringJoin", "[", 
+                  RowBox[{"\"\<\\n\>\"", ",", "#", ",", "\"\<\\n\>\""}], 
+                  "]"}], "&"}], ",", "bitem"}], "]"}], ",", "\"\<\\n\>\"", 
+              ",", 
+              RowBox[{"StringTake", "[", 
+               RowBox[{"tex", ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"pose", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", 
+                  RowBox[{"-", "1"}]}], "}"}]}], "]"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Export", "[", 
+            RowBox[{"ofn", ",", "tex", ",", "\"\<String\>\""}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"MessageDialog", "[", 
+            RowBox[{
+             RowBox[{"Panel", "@", 
+              RowBox[{"Grid", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<Not Supplied: \>\"", ",", "Red"}], "]"}], 
+                    ",", " ", "set1"}], "}"}], ",", 
+                  RowBox[{"{", "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<Not Cited: \>\"", ",", "Blue"}], "]"}], ",", 
+                    "set2"}], "}"}]}], "}"}], ",", 
+                RowBox[{"Alignment", "\[Rule]", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"Right", ",", "Left"}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"Right", ",", "Left"}], "}"}]}], "}"}]}]}], 
+               "]"}]}], ",", 
+             RowBox[{
+             "WindowTitle", "\[Rule]", "\"\<Sorted Successfully!\>\""}]}], 
+            "]"}], ";"}]}], "\n", "]"}]}]}], ")"}]}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.566779818201521*^9, 3.5667798828168344`*^9}, {
+   3.5667799354093895`*^9, 3.56677995849743*^9}, {3.56678001531273*^9, 
+   3.56678009540327*^9}, {3.5667822724157248`*^9, 3.5667823831759186`*^9}, {
+   3.5667824470112305`*^9, 3.5667824634224596`*^9}, {3.566782527912973*^9, 
+   3.5667825650410385`*^9}, 3.5667825966466937`*^9, {3.5667826641792126`*^9, 
+   3.5667826893108563`*^9}, {3.566782741336948*^9, 3.5667828680871706`*^9}, {
+   3.5667829212520638`*^9, 3.56678296460454*^9}, {3.566783144956457*^9, 
+   3.566783241364626*^9}, {3.5667835005559874`*^9, 3.566783596308956*^9}, {
+   3.5667836957435303`*^9, 3.566783702685543*^9}, {3.5667837549768343`*^9, 
+   3.5667837770508738`*^9}, {3.5667838176733446`*^9, 
+   3.5667838351453753`*^9}, {3.5667839187771225`*^9, 3.566783955499587*^9}, {
+   3.5667841519974403`*^9, 3.5667841765362835`*^9}, 3.566784206691136*^9, {
+   3.566784454672047*^9, 3.566784493219715*^9}, {3.566784526884574*^9, 
+   3.5667846580808043`*^9}, {3.5667846884540577`*^9, 3.56678470655009*^9}, {
+   3.5667848163430824`*^9, 3.5667849367752943`*^9}, {3.5667849961998763`*^9, 
+   3.56678502080112*^9}, {3.5667850611434655`*^9, 3.566785062001467*^9}, {
+   3.566785129194461*^9, 3.566785148382495*^9}, {3.566785185621436*^9, 
+   3.5667852264467077`*^9}, {3.566785262498371*^9, 3.5667852645887747`*^9}, {
+   3.566785320483673*^9, 3.5667855653417034`*^9}, {3.566785685149914*^9, 
+   3.5667856861951156`*^9}, {3.5667857238223815`*^9, 
+   3.5667857607788467`*^9}, {3.5667858803218565`*^9, 
+   3.5667858807118573`*^9}, {3.5667871966429186`*^9, 3.566787230510578*^9}, {
+   3.566787328225381*^9, 3.566787339675801*^9}, {3.5667873717494574`*^9, 
+   3.5667873994863057`*^9}, {3.566787441122779*^9, 3.5667874560520053`*^9}, {
+   3.5667876278027706`*^9, 3.566787637599588*^9}, 3.566787671950848*^9, {
+   3.566787719960601*^9, 3.566787746106247*^9}, {3.5667880939757805`*^9, 
+   3.566788156632732*^9}, {3.5667885174443655`*^9, 3.56678852023677*^9}, 
+   3.5667886635472617`*^9, {3.566788755342292*^9, 3.566788756637094*^9}, {
+   3.5667889768397427`*^9, 3.5667889805525494`*^9}, {3.56678903225104*^9, 
+   3.566789110141977*^9}, 3.566789285291564*^9, {3.5667895925363646`*^9, 
+   3.5667895972163725`*^9}}],
+
+Cell[BoxData[
+ FormBox[
+  DynamicModuleBox[{$CellContext`TeXIn$$ = Null, $CellContext`TeXOut$$ = 
+   Null}, 
+   PanelBox[
+    TagBox[GridBox[{
+       {
+        TemplateBox[{
+         StyleBox[
+          "\"   Input: \"", StripOnInput -> False, LineColor -> 
+           RGBColor[0, 0, 1], FrontFaceColor -> RGBColor[0, 0, 1], 
+           BackFaceColor -> RGBColor[0, 0, 1], GraphicsColor -> 
+           RGBColor[0, 0, 1], FontColor -> RGBColor[0, 0, 1]],InputFieldBox[
+           Dynamic[$CellContext`TeXIn$$], String, ImageSize -> 300]},
+         "RowDefault"], 
+        InterpretationBox[
+         ButtonBox[
+          DynamicBox[FEPrivate`FrontEndResource["FEStrings", "BrowseLabel"],
+           ImageSizeCache->{53., {0., 9.}}],
+          Appearance->"DialogBox",
+          ButtonFunction:>BoxForm`FileNameSetterFunction[
+            Dynamic[$CellContext`TeXIn$$], "Open", Automatic, Automatic],
+          Enabled->Automatic,
+          Evaluator->Automatic,
+          ImageMargins->0,
+          ImageSize->Automatic,
+          Method->"Queued"],
+         FileNameSetter[
+          Dynamic[$CellContext`TeXIn$$], "Open", Automatic]]},
+       {
+        TemplateBox[{
+         StyleBox[
+          "\"Output: \"", StripOnInput -> False, LineColor -> 
+           RGBColor[0, 0, 1], FrontFaceColor -> RGBColor[0, 0, 1], 
+           BackFaceColor -> RGBColor[0, 0, 1], GraphicsColor -> 
+           RGBColor[0, 0, 1], FontColor -> RGBColor[0, 0, 1]],InputFieldBox[
+           Dynamic[$CellContext`TeXOut$$], String, ImageSize -> 300]},
+         "RowDefault"], 
+        InterpretationBox[
+         ButtonBox[
+          DynamicBox[FEPrivate`FrontEndResource["FEStrings", "BrowseLabel"],
+           ImageSizeCache->{53., {0., 9.}}],
+          Appearance->"DialogBox",
+          ButtonFunction:>BoxForm`FileNameSetterFunction[
+            Dynamic[$CellContext`TeXOut$$], "Save", Automatic, Automatic],
+          Enabled->Automatic,
+          Evaluator->Automatic,
+          ImageMargins->0,
+          ImageSize->Automatic,
+          Method->"Queued"],
+         FileNameSetter[
+          Dynamic[$CellContext`TeXOut$$], "Save", Automatic]]},
+       {
+        ButtonBox["\<\"Sort bibitems NOW\"\>",
+         Appearance->Automatic,
+         ButtonFunction:>($CellContext`Result = \
+$CellContext`SortBibitem[$CellContext`TeXIn$$, $CellContext`TeXOut$$]),
+         Evaluator->Automatic,
+         Method->"Preemptive"], "\[SpanFromLeft]"}
+      },
+      AutoDelete->False,
+      GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+     "Grid"]],
+   DynamicModuleValues:>{},
+   Initialization:>(SetDirectory[
+      NotebookDirectory[]]; $CellContext`SortBibitem[
+       Pattern[$CellContext`fn, 
+        Blank[]], 
+       Pattern[$CellContext`ofn, 
+        Blank[]]] := 
+     Module[{$CellContext`tex, $CellContext`cites, $CellContext`posb, \
+$CellContext`pose, $CellContext`bib, $CellContext`bitem, $CellContext`VF, \
+$CellContext`in = 0, $CellContext`set1, $CellContext`set2}, If[
+         Or[$CellContext`fn === Null, $CellContext`ofn === Null], 
+         MessageDialog[
+          "Please Set The Input & Output TeX Files!", WindowTitle -> 
+           "File Not Set!"]; Return[]]; If[
+         Not[
+          FileExistsQ[$CellContext`fn]], 
+         MessageDialog[
+          "The Input File Not Found!", WindowTitle -> "File Not Found!"]; 
+         Return[]]; $CellContext`tex = 
+        Import[$CellContext`fn, "String"]; $CellContext`cites = 
+        StringCases[$CellContext`tex, 
+          RegularExpression["(?<!%)\\\\cite{([^{}]+)}"] -> 
+          "$1"]; $CellContext`cites = Flatten[
+          Map[StringTrim[
+            StringSplit[#, ","]]& , $CellContext`cites]]; $CellContext`cites = 
+        DeleteDuplicates[$CellContext`cites]; $CellContext`posb = 
+        StringPosition[$CellContext`tex, 
+          "\\begin{thebibliography}{99}"]; $CellContext`pose = 
+        StringPosition[$CellContext`tex, "\\end{thebibliography}"]; 
+       If[$CellContext`posb === {}, 
+         MessageDialog[
+          "\\begin{thebibliography}{99} Not Found", WindowTitle -> 
+           "Begin Mark Not Found!"]; Return[]]; 
+       If[$CellContext`pose === {}, 
+         MessageDialog[
+          "\\end{thebibliography} Not Found", WindowTitle -> 
+           "End Mark Not Found!"]; Return[]]; $CellContext`bib = StringTrim[
+          
+          StringTake[$CellContext`tex, {
+           Part[$CellContext`posb, 1, 2] + 1, Part[$CellContext`pose, 1, 1] - 
+            1}]]; $CellContext`bitem = StringCases[$CellContext`bib, 
+          RegularExpression[
+          "((%\\\\cite{[^{}]+}\\r?\\n\\r?)?\\\\bibitem{[^{}]+}((?s).*?))(?=%\\\
+\\cite|\\\\bibitem{|$)"]]; $CellContext`bitem = 
+        Map[StringTrim, $CellContext`bitem]; 
+       Scan[($CellContext`VF[#] = 
+         Increment[$CellContext`in])& , $CellContext`cites]; $CellContext`VF[
+          Pattern[$CellContext`x, 
+           Blank[]]] := ($CellContext`VF[$CellContext`x] = 
+         Increment[$CellContext`in]); $CellContext`bib = Flatten[
+          
+          StringCases[$CellContext`bitem, 
+           RegularExpression["\\\\bibitem{([^{}]+)}"] -> 
+           "$1"]]; $CellContext`bitem = 
+        SortBy[$CellContext`bitem, $CellContext`VF[
+           Part[
+            
+            StringCases[#, RegularExpression["\\\\bibitem{([^{}]+)}"] -> 
+             "$1"], 1]]& ]; $CellContext`set1 = 
+        Complement[$CellContext`cites, $CellContext`bib]; $CellContext`set2 = 
+        Complement[$CellContext`bib, $CellContext`cites]; $CellContext`tex = 
+        StringJoin[
+          StringTake[$CellContext`tex, {1, 
+            Part[$CellContext`posb, 1, 2]}], "\n", 
+          Map[StringJoin["\n", #, "\n"]& , $CellContext`bitem], "\n", 
+          StringTake[$CellContext`tex, {
+            Part[$CellContext`pose, 1, 1], -1}]]; 
+       Export[$CellContext`ofn, $CellContext`tex, "String"]; MessageDialog[
+         Panel[
+          Grid[{{
+             Style["Not Supplied: ", Red], $CellContext`set1}, {}, {
+             Style["Not Cited: ", Blue], $CellContext`set2}}, 
+           Alignment -> {{Right, Left}, {Right, Left}}]], WindowTitle -> 
+         "Sorted Successfully!"]; Null])], TraditionalForm]], "Output",
+ CellChangeTimes->{3.566789679116516*^9, 3.5667897189906054`*^9, 
+  3.5667897580374737`*^9, 3.566789871774705*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CDFDeploy", "[", 
+  RowBox[{
+   RowBox[{"ToFileName", "[", 
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<BibSort.cdf\>\""}], 
+    "]"}], ",", "sort", ",", 
+   RowBox[{"WindowSize", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"475", ",", "140"}], "}"}]}], ",", 
+   RowBox[{"Method", "\[Rule]", "\"\<Standalone\>\""}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.56678413482181*^9, 3.566784162075058*^9}, {
+  3.5667842106379433`*^9, 3.5667842547392206`*^9}, {3.5667842923352866`*^9, 
+  3.5667843267957473`*^9}, {3.5667843775114365`*^9, 3.5667844039222827`*^9}, {
+  3.5667872533646183`*^9, 3.566787253739019*^9}, {3.5667893945541563`*^9, 
+  3.566789404943774*^9}, {3.5667897094277887`*^9, 3.566789709677389*^9}, {
+  3.566789741563845*^9, 3.5667897951343393`*^9}}],
+
+Cell[BoxData[
+ FormBox["\<\"E:\\\\Mine\\\\\:5c0f\:5de5\:5177\\\\Sort \
+Bib\\\\BibSort.cdf\"\>", TraditionalForm]], "Output",
+ CellChangeTimes->{
+  3.5667896799433174`*^9, 3.5667897193806057`*^9, {3.566789758427475*^9, 
+   3.56678979569594*^9}, 3.5667898721647053`*^9}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1264, 665},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Microsoft Windows (32-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 94, 1, 75, "Section"],
+Cell[676, 25, 5703, 148, 412, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[6416, 178, 90, 1, 45, "Section"],
+Cell[6509, 181, 315, 7, 31, "Input"],
+Cell[6827, 190, 269, 7, 31, "Input"],
+Cell[7099, 199, 329, 8, 31, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[7465, 212, 143, 2, 45, "Section"],
+Cell[CellGroupData[{
+Cell[7633, 218, 13892, 315, 672, "Input"],
+Cell[21528, 535, 6300, 138, 131, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27865, 678, 804, 16, 31, "Input"],
+Cell[28672, 696, 268, 5, 86, "Output"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
