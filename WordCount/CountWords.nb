@@ -1,0 +1,1294 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     52237,       1285]
+NotebookOptionsPosition[     51304,       1246]
+NotebookOutlinePosition[     51657,       1262]
+CellTagsIndexPosition[     51614,       1259]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Core Function", "Section"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ApsCount", "[", "texFile_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "tex", ",", "envList", ",", "cmdList", ",", "cmd", ",", "eqList", ",", 
+      "eqList2", ",", "eqnList", ",", "eqnList2", ",", "tbList", ",", 
+      "tbList2", ",", "fgList", ",", "fgList2", ",", "epsList", ",", "cc", 
+      ",", "wc", ",", "tbc", ",", "eqc", ",", "fgc"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"envList", "=", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<equation\>\"", ",", "\"\<equation*\>\"", ",", "\"\<eqnarray\>\"", 
+        ",", "\"\<eqnarray*\>\""}], "}"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"eqList", "=", 
+      RowBox[{"eqnList", "=", 
+       RowBox[{"tbList", "=", 
+        RowBox[{"fgList", "=", 
+         RowBox[{"eqList2", "=", 
+          RowBox[{"eqnList2", "=", 
+           RowBox[{"tbList2", "=", 
+            RowBox[{"fgList2", "=", 
+             RowBox[{"{", "}"}]}]}]}]}]}]}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"tex", "=", 
+      RowBox[{"Import", "[", 
+       RowBox[{"texFile", ",", "\"\<Text\>\""}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"tex", "=", 
+      RowBox[{"StringReplace", "[", 
+       RowBox[{"tex", ",", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "\"\<\\\\maketitle\>\"", "\[Rule]", "\"\<%\\\\maketitle\>\""}], ",",
+           "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<\\\\documentclass[\>\"", "\[Rule]", 
+           "\"\<\\\\documentclass[nofootinbib,\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<\\\\begin{thebibliography}\>\"", "\[Rule]", 
+           "\"\<\\\\end{document}\\n\\\\begin{thebibliography}\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<\\\\begin{acknowledgments}\>\"", "\[Rule]", 
+           "\"\<\\\\end{document}\\n\\\\begin{acknowledgments}\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<\\\\includegraphics[\>\"", "\[Rule]", 
+           "\"\<%\\\\includegraphics[\>\""}]}], "\[IndentingNewLine]", 
+         "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"cmdList", "=", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"\"\<\\\\begin{\>\"", "<>", "env", "<>", "\"\<}\>\""}], 
+           ",", 
+           RowBox[{"\"\<\\\\end{\>\"", "<>", "env", "<>", "\"\<}\>\""}]}], 
+          "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"env", ",", "envList"}], "}"}]}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Scan", "[", 
+      RowBox[{
+       RowBox[{"Function", "[", 
+        RowBox[{"cmd0", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"cmd", "=", 
+           RowBox[{"StringCases", "[", 
+            RowBox[{"tex", ",", 
+             RowBox[{
+              RowBox[{"\"\<\\\\newcommand{\\\\\>\"", "~~", 
+               RowBox[{"x", ":", 
+                RowBox[{"LetterCharacter", ".."}]}], "~~", 
+               RowBox[{"\"\<}{\>\"", "<>", "cmd0", "<>", "\"\<}\>\""}]}], 
+              "\[RuleDelayed]", 
+              RowBox[{"\"\<\\\\\>\"", "<>", "x"}]}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Length", "[", "cmd", "]"}], ">", "0"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"cmd", "=", 
+              RowBox[{"First", "[", "cmd", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"tex", "=", 
+              RowBox[{"StringReplace", "[", 
+               RowBox[{"tex", ",", 
+                RowBox[{
+                 RowBox[{
+                 "\"\<\\\\newcommand{\>\"", "<>", "cmd", "<>", "\"\<}{\>\"", "<>",
+                   "cmd0", "<>", "\"\<}\>\""}], "\[RuleDelayed]", 
+                 "\"\<\>\""}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"tex", "=", 
+              RowBox[{"StringReplace", "[", 
+               RowBox[{"tex", ",", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"cmd", "<>", "\"\<\>\""}], "~~", 
+                  RowBox[{"(", 
+                   RowBox[{"b", ":", 
+                    RowBox[{"WordBoundary", "|", "DigitCharacter"}]}], 
+                   ")"}]}], "\[RuleDelayed]", 
+                 RowBox[{"cmd0", "<>", "b"}]}]}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}]}]}], "]"}], ",", "cmdList"}], "]"}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"tex", "=", 
+      RowBox[{"StringReplace", "[", 
+       RowBox[{"tex", ",", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{equation\\\\}((.|\\\\s)*?)[^%]\
+\\\\s*\\\\\\\\end\\\\{equation\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"eqList", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{equation\\\\*\\\\}((.|\\\\s)*?)\
+[^%]\\\\s*\\\\\\\\end\\\\{equation\\\\*\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"eqList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{eqnarray\\\\}((.|\\\\s)*?)[^%]\
+\\\\s*\\\\\\\\end\\\\{eqnarray\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"eqnList", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{eqnarray\\\\*\\\\}((.|\\\\s)*?)\
+[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"eqnList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<(\\\\\\\\begin\\\\{table\\\\}((.|\\\\s)*?)[^%])\\\\s*\\\\\\\\\
+begin\\\\{tabular\\\\}((.|\\\\s)*?)[^%]\\\\s*\\\\\\\\end\\\\{tabular\\\\}\>\"\
+", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"tbList", ",", "\"\<$4\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<(\\\\\\\\begin\\\\{table*\\\\}((.|\\\\s)*?)[^%])\\\\s*\\\\\\\
+\\begin\\\\{tabular\\\\}((.|\\\\s)*?)[^%]\\\\s*\\\\\\\\end\\\\{tabular\\\\}\>\
+\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"tbList2", ",", "\"\<$4\>\""}], "]"}], ";", 
+             "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{figure\\\\}((.|\\\\s)*?)[^%]\\\
+\\s*\\\\\\\\end\\\\{figure\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"fgList", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$0\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "RegularExpression", "[", 
+            "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{figure\\\\*\\\\}((.|\\\\s)*?)[^\
+%]\\\\s*\\\\\\\\end\\\\{figure\\\\*\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"fgList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+             "\"\<$0\>\""}], ")"}]}]}], "\[IndentingNewLine]", "}"}]}], 
+       "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"SetDirectory", "[", 
+      RowBox[{"ToFileName", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<wordcount\>\""}], 
+        "}"}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Export", "[", 
+      RowBox[{"\"\<main.tex\>\"", ",", "tex", ",", "\"\<Text\>\""}], "]"}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{
+     "Run", "[", 
+      "\"\<echo main.tex | /usr/local/texlive/2015/bin/x86_64-darwin/latex \
+wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"wc", "=", 
+      RowBox[{
+       RowBox[{"RunProcess", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<grep\>\"", ",", "\"\<-c\>\"", ",", "\"\<3[.]0863[35]\>\"", 
+           ",", "\"\<wordcount.log\>\""}], "}"}], ",", 
+         "\"\<StandardOutput\>\""}], "]"}], "//", "StringTrim"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"cc", "=", 
+      RowBox[{
+       RowBox[{"RunProcess", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<grep\>\"", ",", "\"\<-c\>\"", ",", "\"\<3[.]0863[23]\>\"", 
+           ",", "\"\<wordcount.log\>\""}], "}"}], ",", 
+         "\"\<StandardOutput\>\""}], "]"}], "//", "StringTrim"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"DeleteFile", "[", "\"\<main.tex\>\"", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"DeleteFile", "[", "\"\<wordcount.log\>\"", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"eqc", "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Length", "[", "eqList", "]"}], "+", 
+          RowBox[{"Plus", "@@", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"1", "+", 
+              RowBox[{"Length", "[", 
+               RowBox[{"StringCases", "[", 
+                RowBox[{"eqn", ",", 
+                 RowBox[{
+                 "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                  "]"}]}], "]"}], "]"}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"eqn", ",", "eqnList"}], "}"}]}], "]"}]}]}], ")"}], " ",
+         "16"}], "\[IndentingNewLine]", "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Length", "[", "eqList2", "]"}], "+", 
+          RowBox[{"Plus", "@@", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"1", "+", 
+              RowBox[{"Length", "[", 
+               RowBox[{"StringCases", "[", 
+                RowBox[{"eqn", ",", 
+                 RowBox[{
+                 "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                  "]"}]}], "]"}], "]"}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"eqn", ",", "eqnList2"}], "}"}]}], "]"}]}]}], ")"}], 
+        "32"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"tbc", "=", 
+      RowBox[{
+       RowBox[{"Plus", "@@", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"13", "+", 
+           RowBox[{"6.5", 
+            RowBox[{"(", 
+             RowBox[{"1", "+", 
+              RowBox[{"Length", "[", 
+               RowBox[{"StringCases", "[", 
+                RowBox[{"tb", ",", 
+                 RowBox[{
+                 "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                  "]"}]}], "]"}], "]"}]}], ")"}]}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"tb", ",", "tbList"}], "}"}]}], "]"}]}], "+", 
+       RowBox[{"Plus", "@@", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"26", "+", 
+           RowBox[{"13", 
+            RowBox[{"(", 
+             RowBox[{"1", "+", 
+              RowBox[{"Length", "[", 
+               RowBox[{"StringCases", "[", 
+                RowBox[{"tb", ",", 
+                 RowBox[{
+                 "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                  "]"}]}], "]"}], "]"}]}], ")"}]}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"tb", ",", "tbList2"}], "}"}]}], "]"}]}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"SetDirectory", "[", 
+      RowBox[{"DirectoryName", "[", "texFile", "]"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList", "=", 
+      RowBox[{"Flatten", "@", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"StringCases", "[", 
+          RowBox[{"fg", ",", 
+           RowBox[{"StringCases", "[", 
+            RowBox[{"fg", ",", 
+             RowBox[{
+              RowBox[{
+              "RegularExpression", "[", 
+               "\"\<\\\\\\\\includegraphics(\\\\[.+?\\\\])?\\\\{(.+?)\\\\}\>\"\
+", "]"}], "\[RuleDelayed]", "\"\<$2\>\""}]}], "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"Not", "[", 
+           RowBox[{"FileExistsQ", "[", "fg", "]"}], "]"}], ",", 
+          RowBox[{"fg", "<>", "\"\<.eps\>\""}], ",", "fg"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"Directory", "[", "]"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", "fgList", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"fgList", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"ImageSize", "/.", 
+         RowBox[{"Options", "[", 
+          RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"20", "+", 
+         RowBox[{"150", "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"fg", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "/", 
+            RowBox[{"fg", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList2", "=", 
+      RowBox[{"Flatten", "@", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"StringCases", "[", 
+          RowBox[{"fg", ",", 
+           RowBox[{"StringCases", "[", 
+            RowBox[{"fg", ",", 
+             RowBox[{
+              RowBox[{
+              "RegularExpression", "[", 
+               "\"\<\\\\\\\\includegraphics(\\\\[.+?\\\\])?\\\\{(.+?)\\\\}\>\"\
+", "]"}], "\[RuleDelayed]", "\"\<$2\>\""}]}], "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList2", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"Not", "[", 
+           RowBox[{"FileExistsQ", "[", "fg", "]"}], "]"}], ",", 
+          RowBox[{"fg", "<>", "\"\<.eps\>\""}], ",", "fg"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList2", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"ImageSize", "/.", 
+         RowBox[{"Options", "[", 
+          RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgList2", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"20", "+", 
+         RowBox[{"150", "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"fg", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "/", 
+            RowBox[{"fg", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fgc", "=", 
+      RowBox[{
+       RowBox[{"Plus", "@@", "fgList"}], "+", 
+       RowBox[{"Plus", "@@", "fgList2"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"tbc", "=", 
+      RowBox[{"tbc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"fgc", "=", 
+      RowBox[{"fgc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"TableForm", "[", 
+      RowBox[{
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<Text Words: \>\"", ",", "wc"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Equation Words: \>\"", ",", "eqc"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Figure Words: \>\"", ",", "fgc"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Table Words: \>\"", ",", "tbc"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<-------------\>\"", ",", "\"\<-------\>\""}], "}"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Total Words: \>\"", ",", 
+           RowBox[{
+            RowBox[{"ToExpression", "[", "wc", "]"}], "+", "eqc", "+", "tbc", 
+            "+", "fgc"}]}], "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
+       RowBox[{"TableSpacing", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0"}], "}"}]}], ",", 
+       RowBox[{"TableAlignments", "\[Rule]", "Right"}]}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Example", "Section"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ApsCount", "[", 
+  RowBox[{"ToFileName", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<TeX\>\""}], "}"}], 
+    ",", "\"\<main.tex\>\""}], "]"}], "]"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ FormBox["\<\"/Volumes/DATA/FF/CUMTB/Research/2Loops/WordCount/TeX\"\>", 
+  TraditionalForm]], "Print"],
+
+Cell[BoxData[
+ FormBox[
+  RowBox[{"{", 
+   RowBox[{"\<\"gamma-eta_c-form-factor.eps\"\>", ",", "\<\"FFc.eps\"\>", 
+    ",", "\<\"FFb.eps\"\>"}], "}"}], TraditionalForm]], "Print"]
+}, Open  ]],
+
+Cell[BoxData[
+ FormBox[
+  TagBox[GridBox[{
+     {"\<\"Text Words: \"\>", "\<\"2917\"\>"},
+     {"\<\"Equation Words: \"\>", "288"},
+     {"\<\"Figure Words: \"\>", "291"},
+     {"\<\"Table Words: \"\>", "52"},
+     {"\<\"-------------\"\>", "\<\"-------\"\>"},
+     {"\<\"Total Words: \"\>", "3548"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Right}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   Function[BoxForm`e$, 
+    TableForm[BoxForm`e$, TableSpacing -> {1, 0}, TableAlignments -> Right]]],
+   TraditionalForm]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CDF", "Section",
+ CellChangeTimes->{{3.566778267019162*^9, 3.5667782681432266`*^9}, {
+  3.5667840743093033`*^9, 3.5667840747773046`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"wc", "=", 
+  RowBox[{"DynamicModule", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"TeXIn", ",", "TeXOut"}], "}"}], ",", 
+    RowBox[{"Panel", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Row", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"TeXIn", "=", "Null"}], ";", 
+             RowBox[{"InputField", "[", 
+              RowBox[{
+               RowBox[{"Dynamic", "[", "TeXIn", "]"}], ",", "String", ",", 
+               RowBox[{"ImageSize", "\[Rule]", "400"}]}], "]"}]}], "}"}], 
+           "]"}], ",", 
+          RowBox[{"FileNameSetter", "[", 
+           RowBox[{"Dynamic", "[", "TeXIn", "]"}], "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Button", "[", 
+           RowBox[{"\"\<Count Words\>\"", ",", 
+            RowBox[{"Result", "=", 
+             RowBox[{"ApsCount", "[", "TeXIn", "]"}]}]}], "]"}], ",", 
+          "SpanFromLeft"}], "}"}]}], "}"}], "//", "Grid"}], "]"}], ",", 
+    RowBox[{"Initialization", "\[RuleDelayed]", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"ApsCount", "[", "texFile_", "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "tex", ",", "envList", ",", "cmdList", ",", "cmd", ",", "eqList", 
+           ",", "eqList2", ",", "eqnList", ",", "eqnList2", ",", "tbList", 
+           ",", "tbList2", ",", "fgList", ",", "fgList2", ",", "epsList", ",",
+            "cc", ",", "wc", ",", "tbc", ",", "eqc", ",", "fgc"}], "}"}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"envList", "=", 
+           RowBox[{"{", 
+            RowBox[{
+            "\"\<equation\>\"", ",", "\"\<equation*\>\"", ",", 
+             "\"\<eqnarray\>\"", ",", "\"\<eqnarray*\>\""}], "}"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"eqList", "=", 
+           RowBox[{"eqnList", "=", 
+            RowBox[{"tbList", "=", 
+             RowBox[{"fgList", "=", 
+              RowBox[{"eqList2", "=", 
+               RowBox[{"eqnList2", "=", 
+                RowBox[{"tbList2", "=", 
+                 RowBox[{"fgList2", "=", 
+                  RowBox[{"{", "}"}]}]}]}]}]}]}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"tex", "=", 
+           RowBox[{"Import", "[", 
+            RowBox[{"texFile", ",", "\"\<Text\>\""}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"tex", "=", 
+           RowBox[{"StringReplace", "[", 
+            RowBox[{"tex", ",", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+               "\"\<\\\\maketitle\>\"", "\[Rule]", "\"\<%\\\\maketitle\>\""}],
+                ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<\\\\documentclass[\>\"", "\[Rule]", 
+                "\"\<\\\\documentclass[nofootinbib,\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<\\\\begin{thebibliography}\>\"", "\[Rule]", 
+                "\"\<\\\\end{document}\\n\\\\begin{thebibliography}\>\""}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<\\\\begin{acknowledgments}\>\"", "\[Rule]", 
+                "\"\<\\\\end{document}\\n\\\\begin{acknowledgments}\>\""}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<\\\\includegraphics[\>\"", "\[Rule]", 
+                "\"\<%\\\\includegraphics[\>\""}]}], "\[IndentingNewLine]", 
+              "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"cmdList", "=", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{
+                "\"\<\\\\begin{\>\"", "<>", "env", "<>", "\"\<}\>\""}], ",", 
+                RowBox[{
+                "\"\<\\\\end{\>\"", "<>", "env", "<>", "\"\<}\>\""}]}], "}"}],
+               ",", 
+              RowBox[{"{", 
+               RowBox[{"env", ",", "envList"}], "}"}]}], "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Scan", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{"cmd0", ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"cmd", "=", 
+                RowBox[{"StringCases", "[", 
+                 RowBox[{"tex", ",", 
+                  RowBox[{
+                   RowBox[{"\"\<\\\\newcommand{\\\\\>\"", "~~", 
+                    RowBox[{"x", ":", 
+                    RowBox[{"LetterCharacter", ".."}]}], "~~", 
+                    RowBox[{"\"\<}{\>\"", "<>", "cmd0", "<>", "\"\<}\>\""}]}],
+                    "\[RuleDelayed]", 
+                   RowBox[{"\"\<\\\\\>\"", "<>", "x"}]}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Length", "[", "cmd", "]"}], ">", "0"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"cmd", "=", 
+                   RowBox[{"First", "[", "cmd", "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"tex", "=", 
+                   RowBox[{"StringReplace", "[", 
+                    RowBox[{"tex", ",", 
+                    RowBox[{
+                    RowBox[{
+                    "\"\<\\\\newcommand{\>\"", "<>", "cmd", "<>", 
+                    "\"\<}{\>\"", "<>", "cmd0", "<>", "\"\<}\>\""}], 
+                    "\[RuleDelayed]", "\"\<\>\""}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"tex", "=", 
+                   RowBox[{"StringReplace", "[", 
+                    RowBox[{"tex", ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"cmd", "<>", "\"\<\>\""}], "~~", 
+                    RowBox[{"(", 
+                    RowBox[{"b", ":", 
+                    RowBox[{"WordBoundary", "|", "DigitCharacter"}]}], 
+                    ")"}]}], "\[RuleDelayed]", 
+                    RowBox[{"cmd0", "<>", "b"}]}]}], "]"}]}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}]}]}], "]"}], ",", "cmdList"}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tex", "=", 
+           RowBox[{"StringReplace", "[", 
+            RowBox[{"tex", ",", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{equation\\\\}((.|\\\\s)*?)\
+[^%]\\\\s*\\\\\\\\end\\\\{equation\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"eqList", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{equation\\\\*\\\\}((.|\\\\\
+s)*?)[^%]\\\\s*\\\\\\\\end\\\\{equation\\\\*\\\\}\>\"", "]"}], 
+                "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"eqList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{eqnarray\\\\}((.|\\\\s)*?)\
+[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"eqnList", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{eqnarray\\\\*\\\\}((.|\\\\\
+s)*?)[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}], 
+                "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"eqnList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<(\\\\\\\\begin\\\\{table\\\\}((.|\\\\s)*?)[^%])\\\\s*\\\
+\\\\\\begin\\\\{tabular\\\\}((.|\\\\s)*?)[^%]\\\\s*\\\\\\\\end\\\\{tabular\\\\\
+}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"tbList", ",", "\"\<$4\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<(\\\\\\\\begin\\\\{table*\\\\}((.|\\\\s)*?)[^%])\\\\s*\\\
+\\\\\\begin\\\\{tabular\\\\}((.|\\\\s)*?)[^%]\\\\s*\\\\\\\\end\\\\{tabular\\\\\
+}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"tbList2", ",", "\"\<$4\>\""}], "]"}], ";", 
+                  "\"\<$1\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{figure\\\\}((.|\\\\s)*?)[^\
+%]\\\\s*\\\\\\\\end\\\\{figure\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"fgList", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$0\>\""}], ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "RegularExpression", "[", 
+                 "\"\<([^%])\\\\s*\\\\\\\\begin\\\\{figure\\\\*\\\\}((.|\\\\s)\
+*?)[^%]\\\\s*\\\\\\\\end\\\\{figure\\\\*\\\\}\>\"", "]"}], "\[RuleDelayed]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"fgList2", ",", "\"\<$2\>\""}], "]"}], ";", 
+                  "\"\<$0\>\""}], ")"}]}]}], "\[IndentingNewLine]", "}"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"SetDirectory", "[", 
+           RowBox[{"ToFileName", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+              "\"\<wordcount\>\""}], "}"}], "]"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Export", "[", 
+           RowBox[{"\"\<main.tex\>\"", ",", "tex", ",", "\"\<Text\>\""}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+          "Run", "[", 
+           "\"\<echo main.tex | \
+/usr/local/texlive/2015/bin/x86_64-darwin/latex wordcount.tex\>\"", "]"}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"wc", "=", 
+           RowBox[{
+            RowBox[{"RunProcess", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<grep\>\"", ",", "\"\<-c\>\"", ",", "\"\<3[.]0863[35]\>\"",
+                 ",", "\"\<wordcount.log\>\""}], "}"}], ",", 
+              "\"\<StandardOutput\>\""}], "]"}], "//", "StringTrim"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"cc", "=", 
+           RowBox[{
+            RowBox[{"RunProcess", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<grep\>\"", ",", "\"\<-c\>\"", ",", "\"\<3[.]0863[23]\>\"",
+                 ",", "\"\<wordcount.log\>\""}], "}"}], ",", 
+              "\"\<StandardOutput\>\""}], "]"}], "//", "StringTrim"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"DeleteFile", "[", "\"\<main.tex\>\"", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"DeleteFile", "[", "\"\<wordcount.log\>\"", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"eqc", "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Length", "[", "eqList", "]"}], "+", 
+               RowBox[{"Plus", "@@", 
+                RowBox[{"Table", "[", 
+                 RowBox[{
+                  RowBox[{"1", "+", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"StringCases", "[", 
+                    RowBox[{"eqn", ",", 
+                    RowBox[{
+                    "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                    "]"}]}], "]"}], "]"}]}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"eqn", ",", "eqnList"}], "}"}]}], "]"}]}]}], ")"}],
+              " ", "16"}], "\[IndentingNewLine]", "+", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Length", "[", "eqList2", "]"}], "+", 
+               RowBox[{"Plus", "@@", 
+                RowBox[{"Table", "[", 
+                 RowBox[{
+                  RowBox[{"1", "+", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"StringCases", "[", 
+                    RowBox[{"eqn", ",", 
+                    RowBox[{
+                    "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                    "]"}]}], "]"}], "]"}]}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"eqn", ",", "eqnList2"}], "}"}]}], "]"}]}]}], 
+              ")"}], "32"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tbc", "=", 
+           RowBox[{
+            RowBox[{"Plus", "@@", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"13", "+", 
+                RowBox[{"6.5", 
+                 RowBox[{"(", 
+                  RowBox[{"1", "+", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"StringCases", "[", 
+                    RowBox[{"tb", ",", 
+                    RowBox[{
+                    "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                    "]"}]}], "]"}], "]"}]}], ")"}]}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"tb", ",", "tbList"}], "}"}]}], "]"}]}], "+", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"26", "+", 
+                RowBox[{"13", 
+                 RowBox[{"(", 
+                  RowBox[{"1", "+", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"StringCases", "[", 
+                    RowBox[{"tb", ",", 
+                    RowBox[{
+                    "RegularExpression", "[", "\"\<\\\\\\\\\\\\\\\\\>\"", 
+                    "]"}]}], "]"}], "]"}]}], ")"}]}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"tb", ",", "tbList2"}], "}"}]}], "]"}]}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"SetDirectory", "[", 
+           RowBox[{"DirectoryName", "[", "texFile", "]"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList", "=", 
+           RowBox[{"Flatten", "@", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"StringCases", "[", 
+               RowBox[{"fg", ",", 
+                RowBox[{"StringCases", "[", 
+                 RowBox[{"fg", ",", 
+                  RowBox[{
+                   RowBox[{
+                   "RegularExpression", "[", 
+                    "\"\<\\\\\\\\includegraphics(\\\\[.+?\\\\])?\\\\{(.+?)\\\\\
+}\>\"", "]"}], "\[RuleDelayed]", "\"\<$2\>\""}]}], "]"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"Not", "[", 
+                RowBox[{"FileExistsQ", "[", "fg", "]"}], "]"}], ",", 
+               RowBox[{"fg", "<>", "\"\<.eps\>\""}], ",", "fg"}], "]"}], ",", 
+             
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"ImageSize", "/.", 
+              RowBox[{"Options", "[", 
+               RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"20", "+", 
+              RowBox[{"150", "/", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"fg", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "/", 
+                 RowBox[{"fg", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList2", "=", 
+           RowBox[{"Flatten", "@", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"StringCases", "[", 
+               RowBox[{"fg", ",", 
+                RowBox[{"StringCases", "[", 
+                 RowBox[{"fg", ",", 
+                  RowBox[{
+                   RowBox[{
+                   "RegularExpression", "[", 
+                    "\"\<\\\\\\\\includegraphics(\\\\[.+?\\\\])?\\\\{(.+?)\\\\\
+}\>\"", "]"}], "\[RuleDelayed]", "\"\<$2\>\""}]}], "]"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList2", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"Not", "[", 
+                RowBox[{"FileExistsQ", "[", "fg", "]"}], "]"}], ",", 
+               RowBox[{"fg", "<>", "\"\<.eps\>\""}], ",", "fg"}], "]"}], ",", 
+             
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList2", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"ImageSize", "/.", 
+              RowBox[{"Options", "[", 
+               RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgList2", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"20", "+", 
+              RowBox[{"150", "/", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"fg", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "/", 
+                 RowBox[{"fg", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fgc", "=", 
+           RowBox[{
+            RowBox[{"Plus", "@@", "fgList"}], "+", 
+            RowBox[{"Plus", "@@", "fgList2"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tbc", "=", 
+           RowBox[{"tbc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"fgc", "=", 
+           RowBox[{"fgc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"TableForm", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"\"\<Text Words: \>\"", ",", "wc"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<Equation Words: \>\"", ",", "eqc"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<Figure Words: \>\"", ",", "fgc"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<Table Words: \>\"", ",", "tbc"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<-------------\>\"", ",", "\"\<-------\>\""}], 
+                "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<Total Words: \>\"", ",", 
+                 RowBox[{
+                  RowBox[{"ToExpression", "[", "wc", "]"}], "+", "eqc", "+", 
+                  "tbc", "+", "fgc"}]}], "}"}]}], "\[IndentingNewLine]", 
+              "}"}], ",", 
+             RowBox[{"TableSpacing", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "0"}], "}"}]}], ",", 
+             RowBox[{"TableAlignments", "\[Rule]", "Right"}]}], "]"}], "//", 
+           "MessageDialog"}]}]}], "\[IndentingNewLine]", "]"}]}], ")"}]}]}], 
+   "]"}]}]], "Input"],
+
+Cell[BoxData[
+ FormBox[
+  DynamicModuleBox[{$CellContext`TeXIn$$ = Null, $CellContext`TeXOut$$}, 
+   PanelBox[
+    TagBox[GridBox[{
+       {
+        TemplateBox[{InputFieldBox[
+           Dynamic[$CellContext`TeXIn$$], String, ImageSize -> 400]},
+         "RowDefault"], 
+        TemplateBox[{Dynamic[$CellContext`TeXIn$$],"Open",All},
+         "FileNameSetterBoxes"]},
+       {
+        ButtonBox["\<\"Count Words\"\>",
+         Appearance->Automatic,
+         ButtonFunction:>($CellContext`Result = \
+$CellContext`ApsCount[$CellContext`TeXIn$$]),
+         Evaluator->Automatic,
+         Method->"Preemptive"], "\[SpanFromLeft]"}
+      },
+      AutoDelete->False,
+      GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+     
+     "Grid"]],
+   DynamicModuleValues:>{},
+   Initialization:>($CellContext`ApsCount[
+      Pattern[$CellContext`texFile, 
+       Blank[]]] := 
+    Module[{$CellContext`tex, $CellContext`envList, $CellContext`cmdList, \
+$CellContext`cmd, $CellContext`eqList, $CellContext`eqList2, \
+$CellContext`eqnList, $CellContext`eqnList2, $CellContext`tbList, \
+$CellContext`tbList2, $CellContext`fgList, $CellContext`fgList2, \
+$CellContext`epsList, $CellContext`cc, $CellContext`wc, $CellContext`tbc, \
+$CellContext`eqc, $CellContext`fgc}, $CellContext`envList = {
+        "equation", "equation*", "eqnarray", 
+         "eqnarray*"}; $CellContext`eqList = ($CellContext`eqnList = \
+($CellContext`tbList = ($CellContext`fgList = ($CellContext`eqList2 = \
+($CellContext`eqnList2 = ($CellContext`tbList2 = ($CellContext`fgList2 = \
+{}))))))); $CellContext`tex = 
+       Import[$CellContext`texFile, "Text"]; $CellContext`tex = 
+       StringReplace[$CellContext`tex, {
+         "\\maketitle" -> "%\\maketitle", "\\documentclass[" -> 
+          "\\documentclass[nofootinbib,", "\\begin{thebibliography}" -> 
+          "\\end{document}\n\\begin{thebibliography}", 
+          "\\begin{acknowledgments}" -> 
+          "\\end{document}\n\\begin{acknowledgments}", "\\includegraphics[" -> 
+          "%\\includegraphics["}]; $CellContext`cmdList = Flatten[
+         Table[{
+           StringJoin["\\begin{", $CellContext`env, "}"], 
+           StringJoin[
+           "\\end{", $CellContext`env, 
+            "}"]}, {$CellContext`env, $CellContext`envList}]]; Scan[
+        Function[$CellContext`cmd0, $CellContext`cmd = 
+          StringCases[$CellContext`tex, StringExpression["\\newcommand{\\", 
+              Pattern[$CellContext`x, 
+               Repeated[LetterCharacter]], 
+              StringJoin["}{", $CellContext`cmd0, "}"]] :> 
+            StringJoin["\\", $CellContext`x]]; 
+         If[Length[$CellContext`cmd] > 
+           0, $CellContext`cmd = First[$CellContext`cmd]; $CellContext`tex = 
+            StringReplace[$CellContext`tex, 
+              StringJoin[
+               "\\newcommand{", $CellContext`cmd, "}{", $CellContext`cmd0, 
+                "}"] :> ""]; $CellContext`tex = 
+            StringReplace[$CellContext`tex, StringExpression[
+                StringJoin[$CellContext`cmd, ""], 
+                Pattern[$CellContext`b, 
+                 Alternatives[WordBoundary, DigitCharacter]]] :> 
+              StringJoin[$CellContext`cmd0, $CellContext`b]]; 
+           Null]], $CellContext`cmdList]; $CellContext`tex = 
+       StringReplace[$CellContext`tex, {
+         RegularExpression[
+           "([^%])\\s*\\\\begin\\{equation\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+equation\\}"] :> (AppendTo[$CellContext`eqList, "$2"]; "$1"), 
+          RegularExpression[
+           "([^%])\\s*\\\\begin\\{equation\\*\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+equation\\*\\}"] :> (AppendTo[$CellContext`eqList2, "$2"]; "$1"), 
+          RegularExpression[
+           "([^%])\\s*\\\\begin\\{eqnarray\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+eqnarray\\}"] :> (AppendTo[$CellContext`eqnList, "$2"]; "$1"), 
+          RegularExpression[
+           "([^%])\\s*\\\\begin\\{eqnarray\\*\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+eqnarray\\*\\}"] :> (AppendTo[$CellContext`eqnList2, "$2"]; "$1"), 
+          RegularExpression[
+           "(\\\\begin\\{table\\}((.|\\s)*?)[^%])\\s*\\\\begin\\{tabular\\}((.\
+|\\s)*?)[^%]\\s*\\\\end\\{tabular\\}"] :> (
+           AppendTo[$CellContext`tbList, "$4"]; "$1"), 
+          RegularExpression[
+           "(\\\\begin\\{table*\\}((.|\\s)*?)[^%])\\s*\\\\begin\\{tabular\\}((\
+.|\\s)*?)[^%]\\s*\\\\end\\{tabular\\}"] :> (
+           AppendTo[$CellContext`tbList2, "$4"]; "$1"), 
+          RegularExpression[
+           "([^%])\\s*\\\\begin\\{figure\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+figure\\}"] :> (AppendTo[$CellContext`fgList, "$2"]; "$0"), 
+          RegularExpression[
+           "([^%])\\s*\\\\begin\\{figure\\*\\}((.|\\s)*?)[^%]\\s*\\\\end\\{\
+figure\\*\\}"] :> (AppendTo[$CellContext`fgList2, "$2"]; "$0")}]; SetDirectory[
+        ToFileName[{
+          NotebookDirectory[], "wordcount"}]]; 
+      Export["main.tex", $CellContext`tex, "Text"]; 
+      Run["echo main.tex | /usr/local/texlive/2015/bin/x86_64-darwin/latex \
+wordcount.tex"]; $CellContext`wc = StringTrim[
+         RunProcess[{"grep", "-c", "3[.]0863[35]", "wordcount.log"}, 
+          "StandardOutput"]]; $CellContext`cc = StringTrim[
+         RunProcess[{"grep", "-c", "3[.]0863[23]", "wordcount.log"}, 
+          "StandardOutput"]]; DeleteFile["main.tex"]; 
+      DeleteFile["wordcount.log"]; 
+      ResetDirectory[]; $CellContext`eqc = (Length[$CellContext`eqList] + 
+          Apply[Plus, 
+            Table[1 + Length[
+               StringCases[$CellContext`eqn, 
+                RegularExpression[
+                "\\\\\\\\"]]], {$CellContext`eqn, $CellContext`eqnList}]]) 
+         16 + (Length[$CellContext`eqList2] + Apply[Plus, 
+            Table[1 + Length[
+               StringCases[$CellContext`eqn, 
+                RegularExpression[
+                "\\\\\\\\"]]], {$CellContext`eqn, $CellContext`eqnList2}]]) 
+         32; $CellContext`tbc = Apply[Plus, 
+          Table[13 + 6.5 (1 + Length[
+               StringCases[$CellContext`tb, 
+                RegularExpression[
+                "\\\\\\\\"]]]), {$CellContext`tb, $CellContext`tbList}]] + 
+        Apply[Plus, 
+          Table[26 + 13 (1 + Length[
+               StringCases[$CellContext`tb, 
+                RegularExpression[
+                "\\\\\\\\"]]]), {$CellContext`tb, $CellContext`tbList2}]]; 
+      SetDirectory[
+        DirectoryName[$CellContext`texFile]]; $CellContext`fgList = Flatten[
+         Table[
+          StringCases[$CellContext`fg, 
+           
+           StringCases[$CellContext`fg, 
+            RegularExpression["\\\\includegraphics(\\[.+?\\])?\\{(.+?)\\}"] :> 
+            "$2"]], {$CellContext`fg, $CellContext`fgList}]]; \
+$CellContext`fgList = Table[
+         If[
+          Not[
+           FileExistsQ[$CellContext`fg]], 
+          
+          StringJoin[$CellContext`fg, 
+           ".eps"], $CellContext`fg], {$CellContext`fg, $CellContext`fgList}]; \
+$CellContext`fgList = Table[
+         ReplaceAll[ImageSize, 
+          Options[
+           
+           Import[$CellContext`fg]]], {$CellContext`fg, $CellContext`fgList}]; \
+$CellContext`fgList = 
+       Table[20 + 
+         150/(Part[$CellContext`fg, 1]/
+          Part[$CellContext`fg, 
+           2]), {$CellContext`fg, $CellContext`fgList}]; $CellContext`fgList2 = 
+       Flatten[
+         Table[
+          StringCases[$CellContext`fg, 
+           
+           StringCases[$CellContext`fg, 
+            RegularExpression["\\\\includegraphics(\\[.+?\\])?\\{(.+?)\\}"] :> 
+            "$2"]], {$CellContext`fg, $CellContext`fgList2}]]; \
+$CellContext`fgList2 = Table[
+         If[
+          Not[
+           FileExistsQ[$CellContext`fg]], 
+          
+          StringJoin[$CellContext`fg, 
+           ".eps"], $CellContext`fg], {$CellContext`fg, \
+$CellContext`fgList2}]; $CellContext`fgList2 = Table[
+         ReplaceAll[ImageSize, 
+          Options[
+           
+           Import[$CellContext`fg]]], {$CellContext`fg, \
+$CellContext`fgList2}]; $CellContext`fgList2 = 
+       Table[20 + 
+         150/(Part[$CellContext`fg, 1]/
+          Part[$CellContext`fg, 
+           2]), {$CellContext`fg, $CellContext`fgList2}]; $CellContext`fgc = 
+       Apply[Plus, $CellContext`fgList] + Apply[Plus, $CellContext`fgList2]; 
+      ResetDirectory[]; $CellContext`tbc = 
+       Ceiling[$CellContext`tbc]; $CellContext`fgc = 
+       Ceiling[$CellContext`fgc]; MessageDialog[
+        TableForm[{{"Text Words: ", $CellContext`wc}, {
+          "Equation Words: ", $CellContext`eqc}, {
+          "Figure Words: ", $CellContext`fgc}, {
+          "Table Words: ", $CellContext`tbc}, {"-------------", "-------"}, {
+          "Total Words: ", 
+           ToExpression[$CellContext`wc] + $CellContext`eqc + \
+$CellContext`tbc + $CellContext`fgc}}, TableSpacing -> {1, 0}, 
+         TableAlignments -> Right]]])], TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CDFDeploy", "[", 
+  RowBox[{
+   RowBox[{"ToFileName", "[", 
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<CountWords.cdf\>\""}],
+     "]"}], ",", "wc", ",", 
+   RowBox[{"WindowSize", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"530", ",", "100"}], "}"}]}], ",", 
+   RowBox[{"Method", "\[Rule]", "\"\<Standalone\>\""}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ FormBox["\<\"/Volumes/DATA/FF/CUMTB/Research/2Loops/WordCount/CountWords.cdf\
+\"\>", TraditionalForm]], "Output"]
+}, Open  ]]
+}, Closed]]
+},
+WindowSize->{1280, 751},
+WindowMargins->{{3, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 29, \
+2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 32, 0, 64, "Section"],
+Cell[615, 24, 18136, 452, 1169, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[18788, 481, 26, 0, 50, "Section"],
+Cell[CellGroupData[{
+Cell[18839, 485, 246, 7, 28, "Input"],
+Cell[CellGroupData[{
+Cell[19110, 496, 117, 2, 20, "Print"],
+Cell[19230, 500, 179, 4, 20, "Print"]
+}, Open  ]],
+Cell[19424, 507, 839, 22, 114, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[20312, 535, 143, 2, 64, "Section"],
+Cell[CellGroupData[{
+Cell[20480, 541, 21438, 493, 1237, "Input"],
+Cell[41921, 1036, 8804, 187, 94, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[50762, 1228, 383, 10, 28, "Input"],
+Cell[51148, 1240, 128, 2, 28, "Output"]
+}, Open  ]]
+}, Closed]]
+}
+]
+*)
+
+(* End of internal cache information *)
