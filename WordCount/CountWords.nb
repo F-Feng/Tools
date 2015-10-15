@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     52237,       1285]
-NotebookOptionsPosition[     51304,       1246]
-NotebookOutlinePosition[     51657,       1262]
-CellTagsIndexPosition[     51614,       1259]
+NotebookDataLength[     57685,       1411]
+NotebookOptionsPosition[     56747,       1372]
+NotebookOutlinePosition[     57100,       1388]
+CellTagsIndexPosition[     57057,       1385]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -334,6 +334,10 @@ wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]",
      RowBox[{"SetDirectory", "[", 
       RowBox[{"DirectoryName", "[", "texFile", "]"}], "]"}], ";", 
      "\[IndentingNewLine]", 
+     RowBox[{"Off", "[", 
+      StyleBox[
+       RowBox[{"Import", "::", "nffil"}], "MessageName"], "]"}], ";", 
+     "\[IndentingNewLine]", 
      RowBox[{"fgList", "=", 
       RowBox[{"Flatten", "@", 
        RowBox[{"Table", "[", 
@@ -361,15 +365,20 @@ wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]",
         RowBox[{"{", 
          RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
      "\[IndentingNewLine]", 
-     RowBox[{"Print", "[", 
-      RowBox[{"Directory", "[", "]"}], "]"}], ";", "\[IndentingNewLine]", 
-     RowBox[{"Print", "[", "fgList", "]"}], ";", "\[IndentingNewLine]", 
      RowBox[{"fgList", "=", 
       RowBox[{"Table", "[", 
        RowBox[{
-        RowBox[{"ImageSize", "/.", 
-         RowBox[{"Options", "[", 
-          RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Import", "[", "fg", "]"}], "=!=", "$Failed"}], ",", 
+          RowBox[{"ImageSize", "/.", 
+           RowBox[{"Options", "[", 
+            RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Width", "[", "fg", "]"}], ",", 
+            RowBox[{"Height", "[", "fg", "]"}]}], "}"}]}], "]"}], ",", 
         RowBox[{"{", 
          RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
      "\[IndentingNewLine]", 
@@ -417,9 +426,17 @@ wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]",
      RowBox[{"fgList2", "=", 
       RowBox[{"Table", "[", 
        RowBox[{
-        RowBox[{"ImageSize", "/.", 
-         RowBox[{"Options", "[", 
-          RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Import", "[", "fg", "]"}], "=!=", "$Failed"}], ",", 
+          RowBox[{"ImageSize", "/.", 
+           RowBox[{"Options", "[", 
+            RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Width", "[", "fg", "]"}], ",", 
+            RowBox[{"Height", "[", "fg", "]"}]}], "}"}]}], "]"}], ",", 
         RowBox[{"{", 
          RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
      "\[IndentingNewLine]", 
@@ -441,6 +458,10 @@ wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]",
       RowBox[{
        RowBox[{"Plus", "@@", "fgList"}], "+", 
        RowBox[{"Plus", "@@", "fgList2"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"On", "[", 
+      StyleBox[
+       RowBox[{"Import", "::", "nffil"}], "MessageName"], "]"}], ";", 
+     "\[IndentingNewLine]", 
      RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
      RowBox[{"tbc", "=", 
       RowBox[{"tbc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
@@ -451,22 +472,22 @@ wordcount.tex\>\"", "]"}], ";", "\[IndentingNewLine]",
        RowBox[{"{", "\[IndentingNewLine]", 
         RowBox[{
          RowBox[{"{", 
-          RowBox[{"\"\<Text Words: \>\"", ",", "wc"}], "}"}], ",", 
+          RowBox[{"\"\<Text Words:       \>\"", ",", "wc"}], "}"}], ",", 
          "\[IndentingNewLine]", 
          RowBox[{"{", 
-          RowBox[{"\"\<Equation Words: \>\"", ",", "eqc"}], "}"}], ",", 
+          RowBox[{"\"\<Equation Words:       \>\"", ",", "eqc"}], "}"}], ",", 
          "\[IndentingNewLine]", 
          RowBox[{"{", 
-          RowBox[{"\"\<Figure Words: \>\"", ",", "fgc"}], "}"}], ",", 
+          RowBox[{"\"\<Figure Words:       \>\"", ",", "fgc"}], "}"}], ",", 
          "\[IndentingNewLine]", 
          RowBox[{"{", 
-          RowBox[{"\"\<Table Words: \>\"", ",", "tbc"}], "}"}], ",", 
+          RowBox[{"\"\<Table Words:       \>\"", ",", "tbc"}], "}"}], ",", 
          "\[IndentingNewLine]", 
          RowBox[{"{", 
-          RowBox[{"\"\<-------------\>\"", ",", "\"\<-------\>\""}], "}"}], 
-         ",", "\[IndentingNewLine]", 
+          RowBox[{"\[HorizontalLine]", ",", "\[HorizontalLine]"}], "}"}], ",",
+          "\[IndentingNewLine]", 
          RowBox[{"{", 
-          RowBox[{"\"\<Total Words: \>\"", ",", 
+          RowBox[{"\"\<Total Words:       \>\"", ",", 
            RowBox[{
             RowBox[{"ToExpression", "[", "wc", "]"}], "+", "eqc", "+", "tbc", 
             "+", "fgc"}]}], "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
@@ -485,35 +506,102 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"ApsCount", "[", 
-  RowBox[{"ToFileName", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<TeX\>\""}], "}"}], 
-    ",", "\"\<main.tex\>\""}], "]"}], "]"}]], "Input"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- FormBox["\<\"/Volumes/DATA/FF/CUMTB/Research/2Loops/WordCount/TeX\"\>", 
-  TraditionalForm]], "Print"],
-
-Cell[BoxData[
- FormBox[
-  RowBox[{"{", 
-   RowBox[{"\<\"gamma-eta_c-form-factor.eps\"\>", ",", "\<\"FFc.eps\"\>", 
-    ",", "\<\"FFb.eps\"\>"}], "}"}], TraditionalForm]], "Print"]
-}, Open  ]],
+  "\"\</Volumes/DATA/FF/CUMTB/Research/2Loops/2Gamma-Etac/Result/TeX/etac-\
+form-factor-Apr-29.tex\>\"", "]"}]], "Input"],
 
 Cell[BoxData[
  FormBox[
   TagBox[GridBox[{
-     {"\<\"Text Words: \"\>", "\<\"2917\"\>"},
-     {"\<\"Equation Words: \"\>", "288"},
-     {"\<\"Figure Words: \"\>", "291"},
-     {"\<\"Table Words: \"\>", "52"},
-     {"\<\"-------------\"\>", "\<\"-------\"\>"},
-     {"\<\"Total Words: \"\>", "3548"}
+     {"\<\"Text Words:       \"\>", "\<\"1513\"\>"},
+     {"\<\"Equation Words:       \"\>", "240"},
+     {"\<\"Figure Words:       \"\>", 
+      TemplateBox[{RowBox[{
+          FractionBox[
+           RowBox[{"150", " ", 
+             RowBox[{"Height", "(", "\"c2.eps.eps\"", ")"}]}], 
+           RowBox[{"Width", "(", "\"c2.eps.eps\"", ")"}]], "+", 
+          FractionBox[
+           RowBox[{"150", " ", 
+             RowBox[{"Height", "(", "\"mRb.eps.eps\"", ")"}]}], 
+           RowBox[{"Width", "(", "\"mRb.eps.eps\"", ")"}]], "+", 
+          FractionBox[
+           RowBox[{"150", " ", 
+             RowBox[{"Height", "(", "\"mRc.eps.eps\"", ")"}]}], 
+           RowBox[{"Width", "(", "\"mRc.eps.eps\"", ")"}]], "+", 
+          FractionBox[
+           RowBox[{"150", " ", 
+             RowBox[{"Height", "(", "\"R.eps.eps\"", ")"}]}], 
+           RowBox[{"Width", "(", "\"R.eps.eps\"", ")"}]], "+", 
+          "370.9005376344086`"}]},
+       "Ceiling"]},
+     {"\<\"Table Words:       \"\>", "52"},
+     {"\[HorizontalLine]", "\[HorizontalLine]"},
+     {"\<\"Total Words:       \"\>", 
+      RowBox[{
+       TemplateBox[{RowBox[{
+           FractionBox[
+            RowBox[{"150", " ", 
+              RowBox[{"Height", "(", "\"c2.eps.eps\"", ")"}]}], 
+            RowBox[{"Width", "(", "\"c2.eps.eps\"", ")"}]], "+", 
+           FractionBox[
+            RowBox[{"150", " ", 
+              RowBox[{"Height", "(", "\"mRb.eps.eps\"", ")"}]}], 
+            RowBox[{"Width", "(", "\"mRb.eps.eps\"", ")"}]], "+", 
+           FractionBox[
+            RowBox[{"150", " ", 
+              RowBox[{"Height", "(", "\"mRc.eps.eps\"", ")"}]}], 
+            RowBox[{"Width", "(", "\"mRc.eps.eps\"", ")"}]], "+", 
+           FractionBox[
+            RowBox[{"150", " ", 
+              RowBox[{"Height", "(", "\"R.eps.eps\"", ")"}]}], 
+            RowBox[{"Width", "(", "\"R.eps.eps\"", ")"}]], "+", 
+           "370.9005376344086`"}]},
+        "Ceiling"], "+", "1805"}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Right}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   Function[BoxForm`e$, 
+    TableForm[BoxForm`e$, TableSpacing -> {1, 0}, TableAlignments -> Right]]],
+   TraditionalForm]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ApsCount", "[", 
+  "\"\</Volumes/DATA/FF/CUMTB/Research/2Loops/3D1-Gamma/TeX/3D1 \
+Decay.tex\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ FormBox[
+  TagBox[GridBox[{
+     {"\<\"Text Words:       \"\>", "\<\"847\"\>"},
+     {"\<\"Equation Words:       \"\>", "672"},
+     {"\<\"Figure Words:       \"\>", 
+      TemplateBox[{RowBox[{
+          FractionBox[
+           RowBox[{"150", " ", 
+             RowBox[{"Height", "(", "\"fig1.eps\"", ")"}]}], 
+           RowBox[{"Width", "(", "\"fig1.eps\"", ")"}]], "+", "137.5`"}]},
+       "Ceiling"]},
+     {"\<\"Table Words:       \"\>", "111"},
+     {"\[HorizontalLine]", "\[HorizontalLine]"},
+     {"\<\"Total Words:       \"\>", 
+      RowBox[{
+       TemplateBox[{RowBox[{
+           FractionBox[
+            RowBox[{"150", " ", 
+              RowBox[{"Height", "(", "\"fig1.eps\"", ")"}]}], 
+            RowBox[{"Width", "(", "\"fig1.eps\"", ")"}]], "+", "137.5`"}]},
+        "Ceiling"], "+", "1630"}]}
     },
     GridBoxAlignment->{
      "Columns" -> {{Right}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
@@ -890,6 +978,10 @@ s)*?)[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}],
           RowBox[{"SetDirectory", "[", 
            RowBox[{"DirectoryName", "[", "texFile", "]"}], "]"}], ";", 
           "\[IndentingNewLine]", 
+          RowBox[{"Off", "[", 
+           StyleBox[
+            RowBox[{"Import", "::", "nffil"}], "MessageName"], "]"}], ";", 
+          "\[IndentingNewLine]", 
           RowBox[{"fgList", "=", 
            RowBox[{"Flatten", "@", 
             RowBox[{"Table", "[", 
@@ -921,9 +1013,17 @@ s)*?)[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}],
           RowBox[{"fgList", "=", 
            RowBox[{"Table", "[", 
             RowBox[{
-             RowBox[{"ImageSize", "/.", 
-              RowBox[{"Options", "[", 
-               RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Import", "[", "fg", "]"}], "=!=", "$Failed"}], ",", 
+               RowBox[{"ImageSize", "/.", 
+                RowBox[{"Options", "[", 
+                 RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Width", "[", "fg", "]"}], ",", 
+                 RowBox[{"Height", "[", "fg", "]"}]}], "}"}]}], "]"}], ",", 
              RowBox[{"{", 
               RowBox[{"fg", ",", "fgList"}], "}"}]}], "]"}]}], ";", 
           "\[IndentingNewLine]", 
@@ -972,9 +1072,17 @@ s)*?)[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}],
           RowBox[{"fgList2", "=", 
            RowBox[{"Table", "[", 
             RowBox[{
-             RowBox[{"ImageSize", "/.", 
-              RowBox[{"Options", "[", 
-               RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Import", "[", "fg", "]"}], "=!=", "$Failed"}], ",", 
+               RowBox[{"ImageSize", "/.", 
+                RowBox[{"Options", "[", 
+                 RowBox[{"Import", "[", "fg", "]"}], "]"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Width", "[", "fg", "]"}], ",", 
+                 RowBox[{"Height", "[", "fg", "]"}]}], "}"}]}], "]"}], ",", 
              RowBox[{"{", 
               RowBox[{"fg", ",", "fgList2"}], "}"}]}], "]"}]}], ";", 
           "\[IndentingNewLine]", 
@@ -996,42 +1104,51 @@ s)*?)[^%]\\\\s*\\\\\\\\end\\\\{eqnarray\\\\*\\\\}\>\"", "]"}],
            RowBox[{
             RowBox[{"Plus", "@@", "fgList"}], "+", 
             RowBox[{"Plus", "@@", "fgList2"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"On", "[", 
+           StyleBox[
+            RowBox[{"Import", "::", "nffil"}], "MessageName"], "]"}], ";", 
+          "\[IndentingNewLine]", 
           RowBox[{"ResetDirectory", "[", "]"}], ";", "\[IndentingNewLine]", 
           RowBox[{"tbc", "=", 
            RowBox[{"tbc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
           RowBox[{"fgc", "=", 
            RowBox[{"fgc", "//", "Ceiling"}]}], ";", "\[IndentingNewLine]", 
-          RowBox[{
-           RowBox[{"TableForm", "[", 
-            RowBox[{
-             RowBox[{"{", "\[IndentingNewLine]", 
-              RowBox[{
+          RowBox[{"MessageDialog", "[", 
+           RowBox[{
+            RowBox[{"TableForm", "[", 
+             RowBox[{
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"\"\<Text Words:       \>\"", ",", "wc"}], "}"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<Equation Words:       \>\"", ",", "eqc"}], 
+                 "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<Figure Words:       \>\"", ",", "fgc"}], "}"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<Table Words:       \>\"", ",", "tbc"}], "}"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"\[HorizontalLine]", ",", "\[HorizontalLine]"}], 
+                 "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<Total Words:       \>\"", ",", 
+                  RowBox[{
+                   RowBox[{"ToExpression", "[", "wc", "]"}], "+", "eqc", "+", 
+                   "tbc", "+", "fgc"}]}], "}"}]}], "\[IndentingNewLine]", 
+               "}"}], ",", 
+              RowBox[{"TableSpacing", "\[Rule]", 
                RowBox[{"{", 
-                RowBox[{"\"\<Text Words: \>\"", ",", "wc"}], "}"}], ",", 
-               "\[IndentingNewLine]", 
-               RowBox[{"{", 
-                RowBox[{"\"\<Equation Words: \>\"", ",", "eqc"}], "}"}], ",", 
-               "\[IndentingNewLine]", 
-               RowBox[{"{", 
-                RowBox[{"\"\<Figure Words: \>\"", ",", "fgc"}], "}"}], ",", 
-               "\[IndentingNewLine]", 
-               RowBox[{"{", 
-                RowBox[{"\"\<Table Words: \>\"", ",", "tbc"}], "}"}], ",", 
-               "\[IndentingNewLine]", 
-               RowBox[{"{", 
-                RowBox[{"\"\<-------------\>\"", ",", "\"\<-------\>\""}], 
-                "}"}], ",", "\[IndentingNewLine]", 
-               RowBox[{"{", 
-                RowBox[{"\"\<Total Words: \>\"", ",", 
-                 RowBox[{
-                  RowBox[{"ToExpression", "[", "wc", "]"}], "+", "eqc", "+", 
-                  "tbc", "+", "fgc"}]}], "}"}]}], "\[IndentingNewLine]", 
-              "}"}], ",", 
-             RowBox[{"TableSpacing", "\[Rule]", 
-              RowBox[{"{", 
-               RowBox[{"1", ",", "0"}], "}"}]}], ",", 
-             RowBox[{"TableAlignments", "\[Rule]", "Right"}]}], "]"}], "//", 
-           "MessageDialog"}]}]}], "\[IndentingNewLine]", "]"}]}], ")"}]}]}], 
+                RowBox[{"1", ",", "0"}], "}"}]}], ",", 
+              RowBox[{"TableAlignments", "\[Rule]", "Right"}]}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"WindowTitle", "\[Rule]", "\"\<Words Count\>\""}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"WindowSize", "\[Rule]", "All"}]}], "\[IndentingNewLine]",
+            "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ")"}]}]}], 
    "]"}]}]], "Input"],
 
 Cell[BoxData[
@@ -1162,7 +1279,8 @@ wordcount.tex"]; $CellContext`wc = StringTrim[
                 RegularExpression[
                 "\\\\\\\\"]]]), {$CellContext`tb, $CellContext`tbList2}]]; 
       SetDirectory[
-        DirectoryName[$CellContext`texFile]]; $CellContext`fgList = Flatten[
+        DirectoryName[$CellContext`texFile]]; Off[
+        MessageName[Import, "nffil"]]; $CellContext`fgList = Flatten[
          Table[
           StringCases[$CellContext`fg, 
            
@@ -1177,11 +1295,13 @@ $CellContext`fgList = Table[
           StringJoin[$CellContext`fg, 
            ".eps"], $CellContext`fg], {$CellContext`fg, $CellContext`fgList}]; \
 $CellContext`fgList = Table[
-         ReplaceAll[ImageSize, 
-          Options[
-           
-           Import[$CellContext`fg]]], {$CellContext`fg, $CellContext`fgList}]; \
-$CellContext`fgList = 
+         If[Import[$CellContext`fg] =!= $Failed, 
+          ReplaceAll[ImageSize, 
+           Options[
+            Import[$CellContext`fg]]], {
+           $CellContext`Width[$CellContext`fg], 
+           $CellContext`Height[$CellContext`fg]}], {$CellContext`fg, \
+$CellContext`fgList}]; $CellContext`fgList = 
        Table[20 + 
          150/(Part[$CellContext`fg, 1]/
           Part[$CellContext`fg, 
@@ -1201,27 +1321,33 @@ $CellContext`fgList2 = Table[
           StringJoin[$CellContext`fg, 
            ".eps"], $CellContext`fg], {$CellContext`fg, \
 $CellContext`fgList2}]; $CellContext`fgList2 = Table[
-         ReplaceAll[ImageSize, 
-          Options[
-           
-           Import[$CellContext`fg]]], {$CellContext`fg, \
+         If[Import[$CellContext`fg] =!= $Failed, 
+          ReplaceAll[ImageSize, 
+           Options[
+            Import[$CellContext`fg]]], {
+           $CellContext`Width[$CellContext`fg], 
+           $CellContext`Height[$CellContext`fg]}], {$CellContext`fg, \
 $CellContext`fgList2}]; $CellContext`fgList2 = 
        Table[20 + 
          150/(Part[$CellContext`fg, 1]/
           Part[$CellContext`fg, 
            2]), {$CellContext`fg, $CellContext`fgList2}]; $CellContext`fgc = 
        Apply[Plus, $CellContext`fgList] + Apply[Plus, $CellContext`fgList2]; 
+      On[
+        MessageName[Import, "nffil"]]; 
       ResetDirectory[]; $CellContext`tbc = 
        Ceiling[$CellContext`tbc]; $CellContext`fgc = 
        Ceiling[$CellContext`fgc]; MessageDialog[
-        TableForm[{{"Text Words: ", $CellContext`wc}, {
-          "Equation Words: ", $CellContext`eqc}, {
-          "Figure Words: ", $CellContext`fgc}, {
-          "Table Words: ", $CellContext`tbc}, {"-------------", "-------"}, {
-          "Total Words: ", 
+        TableForm[{{"Text Words:       ", $CellContext`wc}, {
+          "Equation Words:       ", $CellContext`eqc}, {
+          "Figure Words:       ", $CellContext`fgc}, {
+          "Table Words:       ", $CellContext`tbc}, {$CellContext`\
+\[HorizontalLine], $CellContext`\[HorizontalLine]}, {
+          "Total Words:       ", 
            ToExpression[$CellContext`wc] + $CellContext`eqc + \
 $CellContext`tbc + $CellContext`fgc}}, TableSpacing -> {1, 0}, 
-         TableAlignments -> Right]]])], TraditionalForm]], "Output"]
+         TableAlignments -> Right], WindowTitle -> "Words Count", WindowSize -> 
+        All]])], TraditionalForm]], "Output"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1263,28 +1389,28 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[580, 22, 32, 0, 64, "Section"],
-Cell[615, 24, 18136, 452, 1169, "Input"]
+Cell[615, 24, 18897, 473, 1169, "Input"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[18788, 481, 26, 0, 50, "Section"],
+Cell[19549, 502, 26, 0, 50, "Section"],
 Cell[CellGroupData[{
-Cell[18839, 485, 246, 7, 28, "Input"],
-Cell[CellGroupData[{
-Cell[19110, 496, 117, 2, 20, "Print"],
-Cell[19230, 500, 179, 4, 20, "Print"]
+Cell[19600, 506, 162, 3, 28, "Input"],
+Cell[19765, 511, 2543, 61, 140, "Output"]
 }, Open  ]],
-Cell[19424, 507, 839, 22, 114, "Output"]
+Cell[CellGroupData[{
+Cell[22345, 577, 139, 3, 28, "Input"],
+Cell[22487, 582, 1368, 35, 140, "Output"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[20312, 535, 143, 2, 64, "Section"],
+Cell[23904, 623, 143, 2, 64, "Section"],
 Cell[CellGroupData[{
-Cell[20480, 541, 21438, 493, 1237, "Input"],
-Cell[41921, 1036, 8804, 187, 94, "Output"]
+Cell[24072, 629, 22783, 522, 1322, "Input"],
+Cell[46858, 1153, 9310, 196, 94, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[50762, 1228, 383, 10, 28, "Input"],
-Cell[51148, 1240, 128, 2, 28, "Output"]
+Cell[56205, 1354, 383, 10, 28, "Input"],
+Cell[56591, 1366, 128, 2, 28, "Output"]
 }, Open  ]]
 }, Closed]]
 }

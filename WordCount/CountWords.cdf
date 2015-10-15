@@ -23,10 +23,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[      1064,         20]
-NotebookDataLength[      9469,        220]
-NotebookOptionsPosition[     10020,        215]
-NotebookOutlinePosition[     10466,        235]
-CellTagsIndexPosition[     10423,        232]
+NotebookDataLength[      9961,        228]
+NotebookOptionsPosition[     10512,        223]
+NotebookOutlinePosition[     10958,        243]
+CellTagsIndexPosition[     10915,        240]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -157,7 +157,8 @@ wordcount.tex"]; $CellContext`wc = StringTrim[
                RegularExpression[
                "\\\\\\\\"]]]), {$CellContext`tb, $CellContext`tbList2}]]; 
      SetDirectory[
-       DirectoryName[$CellContext`texFile]]; $CellContext`fgList = Flatten[
+       DirectoryName[$CellContext`texFile]]; Off[
+       MessageName[Import, "nffil"]]; $CellContext`fgList = Flatten[
         Table[
          StringCases[$CellContext`fg, 
           
@@ -171,11 +172,13 @@ $CellContext`fgList = Table[
          StringJoin[$CellContext`fg, 
           ".eps"], $CellContext`fg], {$CellContext`fg, $CellContext`fgList}]; \
 $CellContext`fgList = Table[
-        ReplaceAll[ImageSize, 
-         Options[
-          
-          Import[$CellContext`fg]]], {$CellContext`fg, $CellContext`fgList}]; \
-$CellContext`fgList = 
+        If[Import[$CellContext`fg] =!= $Failed, 
+         ReplaceAll[ImageSize, 
+          Options[
+           Import[$CellContext`fg]]], {
+          $CellContext`Width[$CellContext`fg], 
+          $CellContext`Height[$CellContext`fg]}], {$CellContext`fg, \
+$CellContext`fgList}]; $CellContext`fgList = 
       Table[20 + 150/(Part[$CellContext`fg, 1]/
          Part[$CellContext`fg, 
           2]), {$CellContext`fg, $CellContext`fgList}]; $CellContext`fgList2 = 
@@ -193,25 +196,30 @@ $CellContext`fgList2 = Table[
          StringJoin[$CellContext`fg, 
           ".eps"], $CellContext`fg], {$CellContext`fg, $CellContext`fgList2}]; \
 $CellContext`fgList2 = Table[
-        ReplaceAll[ImageSize, 
-         Options[
-          
-          Import[$CellContext`fg]]], {$CellContext`fg, $CellContext`fgList2}]; \
-$CellContext`fgList2 = 
+        If[Import[$CellContext`fg] =!= $Failed, 
+         ReplaceAll[ImageSize, 
+          Options[
+           Import[$CellContext`fg]]], {
+          $CellContext`Width[$CellContext`fg], 
+          $CellContext`Height[$CellContext`fg]}], {$CellContext`fg, \
+$CellContext`fgList2}]; $CellContext`fgList2 = 
       Table[20 + 150/(Part[$CellContext`fg, 1]/
          Part[$CellContext`fg, 
           2]), {$CellContext`fg, $CellContext`fgList2}]; $CellContext`fgc = 
-      Apply[Plus, $CellContext`fgList] + Apply[Plus, $CellContext`fgList2]; 
+      Apply[Plus, $CellContext`fgList] + Apply[Plus, $CellContext`fgList2]; On[
+       MessageName[Import, "nffil"]]; 
      ResetDirectory[]; $CellContext`tbc = 
       Ceiling[$CellContext`tbc]; $CellContext`fgc = Ceiling[$CellContext`fgc]; 
      MessageDialog[
-       TableForm[{{"Text Words: ", $CellContext`wc}, {
-         "Equation Words: ", $CellContext`eqc}, {
-         "Figure Words: ", $CellContext`fgc}, {
-         "Table Words: ", $CellContext`tbc}, {"-------------", "-------"}, {
-         "Total Words: ", 
+       TableForm[{{"Text Words:       ", $CellContext`wc}, {
+         "Equation Words:       ", $CellContext`eqc}, {
+         "Figure Words:       ", $CellContext`fgc}, {
+         "Table Words:       ", $CellContext`tbc}, {$CellContext`\
+\[HorizontalLine], $CellContext`\[HorizontalLine]}, {
+         "Total Words:       ", 
           ToExpression[$CellContext`wc] + $CellContext`eqc + $CellContext`tbc + \
-$CellContext`fgc}}, TableSpacing -> {1, 0}, TableAlignments -> Right]]])]]]
+$CellContext`fgc}}, TableSpacing -> {1, 0}, TableAlignments -> Right], 
+       WindowTitle -> "Words Count", WindowSize -> All]])]]]
 },
 WindowSize->{530, 100},
 Visible->True,
@@ -234,11 +242,11 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[1464, 33, 8552, 180, 87, InheritFromParent]
+Cell[1464, 33, 9044, 188, 87, InheritFromParent]
 }
 ]
 *)
 
 (* End of internal cache information *)
 
-(* NotebookSignature wuT7sPb8GykSNBw@f@VCUS0f *)
+(* NotebookSignature bxDTtyF6K1lRuAgFaMRiys45 *)
